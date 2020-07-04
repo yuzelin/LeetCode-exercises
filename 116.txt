@@ -1,0 +1,51 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    //首先父亲节点负责将左右孩子链接
+    //然后父亲节点将右孩子节点与兄弟的左孩子节点链接
+    //可以用队列实现
+    //如果递归实现？func:将孩子链接起来，如果next不为空，
+    //将堂兄弟链接起来，然后对左右子树递归调用
+    public Node connect(Node root) {
+        if (root == null || root.left == null)
+        {
+            return root;
+        }
+        //孩子的链接
+        root.left.next = root.right;
+        //堂兄弟的链接
+        if (root.next != null)
+        {
+            root.right.next = root.next.left;
+        }
+        if(root.left.left != null)
+        {
+            connect(root.left);
+            connect(root.right);
+        }
+        return root;
+    }
+    
+    
+}
