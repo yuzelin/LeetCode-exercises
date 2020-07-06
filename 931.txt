@@ -1,0 +1,30 @@
+class Solution {
+    public int minFallingPathSum(int[][] A) {
+        //DP
+        int len = A.length;
+        
+        for (int i = 1; i < len; i++)
+        {
+            for (int j = 0; j < len; j++)
+            {
+                int test = A[i - 1][j];
+                if (j > 0)
+                {
+                    test = Math.min(test, A[i - 1][j - 1]);
+                }
+                if (j < len - 1)
+                {
+                    test = Math.min(test, A[i - 1][j + 1]);
+                }
+                A[i][j] = test + A[i][j];
+            }
+        }
+        //返回最后一行的min
+        int minSum = A[len - 1][0];
+        for (int i = 1; i < len; i++)
+        {
+            minSum = minSum < A[len - 1][i] ? minSum : A[len - 1][i];
+        }
+        return minSum;
+    }
+}
