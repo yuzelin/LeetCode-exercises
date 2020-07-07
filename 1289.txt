@@ -1,0 +1,48 @@
+class Solution {
+    public int minFallingPathSum(int[][] arr) {
+        int len = arr.length;
+        if (len == 1)
+        {
+            return arr[0][0];
+        }
+        int min = arr[0][0] < arr[0][1] ? 0 : 1;
+        int secMin = 1 - min;
+        for (int i = 2; i < len; i++)
+        {
+            if (arr[0][i] < arr[0][min])
+            {
+                secMin = min;
+                min = i;
+            }
+            else if (arr[0][i] < arr[0][secMin])
+            {
+                secMin = i;
+            }
+        }
+        
+        for (int i = 1; i < len; i++)
+        {
+            int curMin = 0, curSecMin = 0; 
+            for (int j = 0; j < len; j++)
+            {
+                arr[i][j] += j == min ? arr[i - 1][secMin] : arr[i - 1][min];
+                if (j > 0)
+                {
+                    if (arr[i][j] < arr[i][curMin])
+                    {
+                        curSecMin = curMin;
+                        curMin = j;
+                    }
+                    else if (arr[i][j] < arr[i][curSecMin])
+                    {
+                        curSecMin = j;
+                    }
+                }
+            }
+            min = curMin;
+            secMin = curSecMin;
+        }
+        
+        return arr[len - 1][min];
+    }
+}
