@@ -1,0 +1,67 @@
+class Solution {
+    public String pushDominoes(String dominoes) {
+        int len = dominoes.length();
+        char[] dom = dominoes.toCharArray();
+        int left = 0, right = 0;
+        while (left < len)
+        {
+            if (dom[left] == '.')
+            {
+                for (right = left + 1; right < len && dom[right] == '.'; right++);
+                if (right != len)
+                {
+                    if (dom[right] == 'L')
+                    {
+                        for (int i = left; i < right; i++)
+                        {
+                            dom[i] = 'L';
+                        }
+                    }
+                }
+                left = right;
+            }
+            else if (dom[left] == 'L')
+            {
+                left++;
+            }
+            else
+            {
+                //先略过多余的R
+                for(; left < len - 1; left++)
+                {
+                    if (dom[left + 1] != 'R')
+                    {
+                        break;
+                    }
+                }
+                for (right = left + 1; right < len && dom[right] == '.'; right++);
+                if (right == len)
+                {
+                    for (int i = left; i < len; i++)
+                    {
+                        dom[i] = 'R';
+                    }
+                }
+                else if (dom[right] == 'L')
+                {
+                    int i, j;
+                    for(i = left + 1, j = right - 1; i < j; i++, j--)
+                    {
+                        dom[i] = 'R';
+                        dom[j] = 'L';
+                    }  
+                }
+                else
+                {
+                    for (int i = left + 1; i < right; i++)
+                    {
+                        dom[i] = 'R';
+                    }
+                }
+                left = right;
+            }
+        }
+        
+        return String.valueOf(dom);
+    }
+}
